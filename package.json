@@ -1,0 +1,33 @@
+{
+	"name": "blog-api",
+	"version": "1.0.0",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"build": "tsc",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "node dist/index.js",
+		"dev": "ts-node-dev --loader ts-node/esm --respawn src/index.ts",
+		"remove": "rm -r dist"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cookie-parser": "^1.4.7",
+		"dotenv": "^16.4.7",
+		"express": "^4.21.2",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.10.0"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/cookie-parser": "^1.4.8",
+		"@types/dotenv": "^6.1.1",
+		"@types/express": "^5.0.0",
+		"@types/jsonwebtoken": "^9.0.8",
+		"typescript": "5.7.3"
+	}
+}
