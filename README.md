@@ -1,4 +1,20 @@
 # blog-api-lite
+
+# Starting the server
+```bash
+git clone https://github.com/PrathameshGandule/blog-api-lite.git
+```
+```bash
+cd blog-api-lite
+npm install
+```
+- Setup .env configs
+```bash
+npm run build
+```
+```bash
+npm run start
+```
 ***
 # Overview
 - **`PORT`** is assumed at **`3000`** 
@@ -130,19 +146,4 @@
 		...
 	]
 	```
-
-# Starting the server
-```bash
-git clone https://github.com/PrathameshGandule/blog-api-lite.git
-```
-```bash
-cd blog-api-lite
-npm install
-```
-- Setup .env configs
-```bash
-npm run build
-```
-```bash
-npm run start
-```
+***
