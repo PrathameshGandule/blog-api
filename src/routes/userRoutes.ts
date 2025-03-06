@@ -9,7 +9,7 @@ import {
 
 import verifyToken from "../middlewares/authMiddleware.js";
 
-const router: Router = Router();
+const router = Router();
 
 router.post('/blog/add', verifyToken, addBlog);
 router.delete('/blog/delete/:id', verifyToken, deleteBlog);

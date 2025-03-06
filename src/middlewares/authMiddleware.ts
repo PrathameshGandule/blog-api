@@ -1,17 +1,14 @@
-import jpkg, { JwtPayload } from 'jsonwebtoken';
-const { verify } = jpkg;
+import jwt, { JwtPayload } from 'jsonwebtoken';
+const { verify } = jwt;
 import { Request, Response, NextFunction } from 'express';
 
 const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
-    const authHeader = req.headers.authorization;
+    const token: string | undefined = req.cookies?.token;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-		res.status(401).json({ message: "No auth token provided" });
+    if (!token) {
+        res.status(401).json({ message: "Access Denied. No token provided." });
         return;
     }
-
-    const token = authHeader.split(" ")[1];
-
     const jwt_secret = process.env.JWT_SECRET;
     if (!jwt_secret) {
         console.error("❌ No JWT secret provided.");

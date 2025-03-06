@@ -5,7 +5,7 @@ import {
 	getBlogsWithSearch 
 } from "../controllers/publicController.js";
 
-const router: Router = Router();
+const router = Router();
 
 router.get('/blogs', getBlogsWithSearch)
 router.get('/blog/:id', getBlogById);

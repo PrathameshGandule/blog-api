@@ -1,19 +1,25 @@
 import { Request, Response } from "express";
+import { Types } from "mongoose";
+import { z } from "zod";
 import Blog from "../models/Blog.js";
-import { DeleteResult, Types } from "mongoose";
+import { IBlog } from "../models/Blog.js";
+
+const blogSchema = z.object({
+    title: z.string(),
+    content: z.string()
+})
 
 const addBlog = async (req: Request, res: Response): Promise<void> => {
 	const userId: Types.ObjectId = req.user.id;
-
-	if (!req.body.title || !req.body.content) {
-		res.status(404).json({ message: "PLease provide title and content both !" });
-		return;
-	}
-	const title: string = req.body.title;
-	const content: string = req.body.content;
+    const parsedBody = blogSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+        res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
+        return;
+    }
+    const { title , content } =  parsedBody.data;
 
 	try {
-		const newBlog: IBlog = new Blog({
+		const newBlog = new Blog({
 			author: userId,
 			title,
 			content
@@ -24,8 +30,8 @@ const addBlog = async (req: Request, res: Response): Promise<void> => {
 		res.status(200).json({
 			message: "Your blog is uploaded !!!"
 		});
-	} catch (err: unknown) {
-		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+	} catch (err) {
+		console.error("❌ Some error occurred:", err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
@@ -36,7 +42,7 @@ const deleteBlog = async (req: Request, res: Response): Promise<void> => {
 	const blogId: string = req.params.id;
 
 	try {
-		const blog: IBlog | null = await Blog.findById(blogId);
+		const blog = await Blog.findById(blogId);
 		if (!blog) {
 			res.status(404).json({ message: "Blog not found" });
 			return;
@@ -50,8 +56,8 @@ const deleteBlog = async (req: Request, res: Response): Promise<void> => {
 		await Blog.deleteOne({ _id: blog._id });
 
 		res.status(200).json({ message: "Your blog is deleted" });
-	} catch (err: unknown) {
-		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+	} catch (err) {
+		console.error("❌ Some error occurred:", err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
@@ -60,7 +66,12 @@ const deleteBlog = async (req: Request, res: Response): Promise<void> => {
 const updateBlog = async (req: Request, res: Response): Promise<void> => {
 	const userId: Types.ObjectId = req.user.id;
 	const blogId: string = req.params.id;
-	const { title, content } = req.body;
+    const parsedBody = blogSchema.safeParse(req.body);
+    if (!parsedBody.success) {
+        res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
+        return;
+    }
+    const { title , content } =  parsedBody.data;
 
 	try {
 		const blog = await Blog.findById(blogId);
@@ -74,19 +85,14 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
 			return;
 		}
 
-		if (!title && !content) {
-			res.status(400).json({ message: "Please provide at least one field to update" });
-			return;
-		}
-
-		if (title) blog.title = title;
-		if (content) blog.content = content;
+		blog.title = title;
+		blog.content = content;
 
 		await blog.save();
 
 		res.status(200).json({ message: "Blog updated successfully", blog });
-	} catch (err: unknown) {
-		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+	} catch (err) {
+		console.error("❌ Some error occurred:", err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
@@ -95,7 +101,7 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
 const getBlogs = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const userId: Types.ObjectId = req.user.id;
-		const blogs: IBlog[] = await Blog.find({ author: userId });
+		const blogs = await Blog.find({ author: userId });
 		res.status(200).json(blogs);
 	} catch (err: unknown) {
 		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);

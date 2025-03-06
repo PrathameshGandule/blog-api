@@ -1,25 +1,14 @@
 import { Request, Response } from "express"
 import Blog from "../models/Blog.js"
 
-// const getAllBlogs = async (req: Request, res: Response): Promise<void> => {
-// 	try {
-// 		const blogs: IBlog[] = await Blog.find({});
-// 		res.status(200).json(blogs);
-// 		return;
-// 	} catch (err: unknown) {
-// 		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
-// 		res.status(500).json({ message: "Internal Server Error" });
-// 	}
-// }
-
 const getBlogById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const blogId: string = req.params.id;
 		const blog = await Blog.findById(blogId);
 		res.status(200).json(blog);
 		return;
-	} catch (err: unknown) {
-		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+	} catch (err) {
+		console.error("❌ Some error occurred:", err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
@@ -27,7 +16,7 @@ const getBlogById = async (req: Request, res: Response): Promise<void> => {
 
 const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const search = req.query.search as string;
+		const search = String(req.query.search) || null;
 
 		// Sanitize search input to prevent regex injection
 		const escapeRegex = (string: string) => string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -43,10 +32,10 @@ const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> =>
 			}
 			: {};
 
-		const blogs: IBlog[] = await Blog.find(query);
+		const blogs = await Blog.find(query);
 		res.status(200).json(blogs);
-	} catch (err: unknown) {
-		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+	} catch (err) {
+		console.error("❌ Some error occurred:", err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}

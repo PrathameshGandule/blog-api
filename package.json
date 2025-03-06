@@ -7,6 +7,7 @@
 		"build": "tsc",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "node dist/index.js",
+		"dev": "node --watch-path=dist dist/index.js",
 		"remove": "rm -r dist"
 	},
 	"keywords": [],
@@ -19,7 +20,8 @@
 		"dotenv": "^16.4.7",
 		"express": "^4.21.2",
 		"jsonwebtoken": "^9.0.2",
-		"mongoose": "^8.10.0"
+		"mongoose": "^8.10.0",
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.6",
