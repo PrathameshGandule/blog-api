@@ -16,19 +16,14 @@ const getBlogById = async (req: Request, res: Response): Promise<void> => {
 
 const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> => {
 	try {
-		const search = String(req.query.search) || null;
+		const search = req.body.search ? String(req.body.search) : false;
 
-		// Sanitize search input to prevent regex injection
-		const escapeRegex = (string: string) => string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-		const sanitizedSearch = search ? escapeRegex(search) : null;
-
-		// Build the search query only if there's a valid search term
-		const query = sanitizedSearch ?
+		const query = search ?
 			{
 				$or: [
-					{ title: { $regex: sanitizedSearch, $options: 'i' } },
-					{ content: { $regex: sanitizedSearch, $options: 'i' } }
-				]
+                    { title: { $regex: search, $options: "i" } }, // Case-insensitive search in title
+                    { content: { $regex: search, $options: "i" } }, // Case-insensitive search in content
+                ]
 			}
 			: {};
 

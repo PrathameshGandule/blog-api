@@ -2,6 +2,14 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 const { verify } = jwt;
 import { Request, Response, NextFunction } from 'express';
 
+declare global {
+    namespace Express {
+        interface Request {
+            user: JwtPayload;
+        }
+    }
+}
+
 const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     const token: string | undefined = req.cookies?.token;
 

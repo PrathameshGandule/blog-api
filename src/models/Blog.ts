@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
-import { Types } from "mongoose";
+import { Types , Document } from "mongoose";
 
-interface IBlog extends Document {
+interface IBlog extends Document{
     author: Types.ObjectId,
     title: string,
     content: string,

@@ -4,6 +4,7 @@ import { z } from "zod";
 import { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import User from "../models/User.js"
+import { redisClient } from "../config/redis.js";
 configDotenv();
 
 const { hash, compare } = bcryptjs;
@@ -28,11 +29,20 @@ const register = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         const { name, email, password } = parsedBody.data;
-
+        const user = await User.findOne({ email });
+        if(user){
+            res.status(400).json({ message: "User with this email already exists" });
+            return;
+        }
+        const isVerified = await redisClient.get(`email_verified:${email}`)
+        if(!isVerified){
+            res.status(403).json({ message: "Verify your email first" });
+            return;
+        }
         const hashedPassword = await hash(password, 10);
-
         const newUser = new User({ name, email, password: hashedPassword });
         await newUser.save();
+        await redisClient.del(`email_verified:${email}`);
         res.status(201).json({
             message: `User registered with email ${email}`
         });
@@ -51,22 +61,18 @@ const login = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         const { email, password } = parsedBody.data;
-
         const user = await User.findOne({ email });
-
         if (!user) {
             res.status(404).json({
                 message: `User with username ${email} not found !`
             });
             return;
         }
-
         const isMatch: boolean = await compare(password, user.password);
         if (!isMatch) {
             res.status(400).json({ message: "Invalid Password !" })
             return;
         }
-
         if (!process.env.JWT_SECRET) {
             throw new Error("NO JWT_SECRET provided in .env file!!!")
         }
@@ -76,14 +82,12 @@ const login = async (req: Request, res: Response): Promise<void> => {
             jwt_secret,
             { expiresIn: "5d" }
         )
-
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
             maxAge: 5 * 24 * 60 * 60 * 1000
         });
-
         res.status(200).json({
             message: "Login successful",
         });
