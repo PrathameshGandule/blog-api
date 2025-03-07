@@ -21,6 +21,8 @@ npm run start
 - [Auth Routes](#auth-routes)
 	- Register 
 	- Login
+    - Send OTP
+    - Verify OTP
 - [User Routes](#user-routes)
 	- Add Blog
 	- Delete Blog
@@ -31,7 +33,7 @@ npm run start
 	- Get all Blogs
 
 ## Auth Routes
-1. `POST` - `http://localhost:3000/api/auth/register`
+1. `POST` - `/api/auth/register`
 	- To register the user
 	- json PayLoad: -
 	```json
@@ -47,27 +49,54 @@ npm run start
 		"message": "User registered with email <email>"
 	}
 	```
-2. `POST` - `http://localhost:3000/api/auth/login`
+2. `POST` - `/api/auth/login`
 	- To login 
 	- json PayLoad: -
 	```json
 	{
-		"email": "<string>",
+		"email": "<valid email-id>",
 		"password": "<string>"
 	}
 	```
 	- Response: -
 	```json
 	{
-        "message": "Login successful",
-    	"token": "<token>"
+        "message": "Login successful"
 	}
+    // and a token in cookies
 	```
+3. `POST` - `/api/auth/send-otp`
+    - To send otp
+    - json PayLoad :-
+    ```json
+    {
+        "email": "<valid email-id>"
+    }
+    ```
+    - Response :- 
+    ```json
+    {
+        "message": "Otp sent successfully"
+    }
+    ```
+4. `POST` - `/api/auth/verify-otp`
+    - To verify otp
+    - json PayLoad :- 
+    ```json
+    {
+        "email": "<valid email-id>",
+        "otp": "<your otp>"
+    }
+    ```
+    - Response :- 
+    ```json
+    {
+        "message": "OTP verified successfully! You can register now between 2 minutes."
+    }
+    ```
 ***
 ## User Routes
-- **It's expected to send Authorization token with every request with preceeding _`Bearer `_**
-- Example : - `Bearer eyBglsjIk_hbskd52D3de2415QCD.51d51`
-1. `POST` - `http://localhost:3000/api/user/blog/add`
+1. `POST` - `/api/user/blog/add`
 	- To add blog
 	- json PayLoad: -
 	```json
@@ -82,7 +111,7 @@ npm run start
 		"message": "Your blog is uploaded"
 	}
 	```
-2. `DELETE` - `http://localhost:3000/api/user/blog/delete/:id`
+2. `DELETE` - `/api/user/blog/delete/:id`
 	- To delete a specific blog
 	- Id to be provided in params
 	- No json payload here
@@ -92,7 +121,7 @@ npm run start
 		"message": "Your blog is deleted"
 	}
 	```
-3. `PUT` - `http://localhost:3000/api/user/blog/update/:id`
+3. `PUT` - `/api/user/blog/update/:id`
 	- To update a specific blog
 	- Id to be provided in params
 	- Atleast one field to be given in json payload
@@ -110,7 +139,7 @@ npm run start
 		"blog": "<whole updated blog>"
 	}
 	```
-4. `GET` - `http://localhost:3000/api/user/blogs`
+4. `GET` - `/api/user/blogs`
 	- To get all blogs posted by the user
 	- No json payload here
 	- Response: -
@@ -121,7 +150,7 @@ npm run start
 	```
 ***
 ## General public routes
-1. `GET` - `http://localhost:3000/api/public/blog/:id`
+1. `GET` - `/api/public/blog/:id`
 	- To get a blog by it's Id
 	- Id to be provided in params
 	- Response: -
@@ -136,7 +165,7 @@ npm run start
 		"__v": "<number>"
 	}
 	```
-2. `GET` - `http://localhost:3000/api/public/blogs`
+2. `GET` - `/api/public/blogs`
 	- To get all blogs in the database
 	- Response: -
 	```json
