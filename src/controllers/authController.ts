@@ -5,6 +5,7 @@ import { Request, Response } from "express";
 import { configDotenv } from "dotenv";
 import User from "../models/User.js"
 import { redisClient } from "../config/redis.js";
+import { sendOtp } from "../utils/otpUtil.js";
 configDotenv();
 
 const { hash, compare } = bcryptjs;
@@ -19,6 +20,11 @@ const registrationSchema = z.object({
 const loginSchema = z.object({
     email: z.string().email(),
     password: z.string()
+});
+
+const changePassSchema = z.object({
+    email: z.string().email(),
+    newPassword: z.string()
 })
 
 const register = async (req: Request, res: Response): Promise<void> => {
@@ -31,11 +37,11 @@ const register = async (req: Request, res: Response): Promise<void> => {
         const { name, email, password } = parsedBody.data;
         const user = await User.findOne({ email });
         if(user){
-            res.status(400).json({ message: "User with this email already exists" });
+            res.status(400).json({ message: "User with this email already exists, You may Login" });
             return;
         }
         const isVerified = await redisClient.get(`email_verified:${email}`)
-        if(!isVerified){
+        if(isVerified !== "true"){
             res.status(403).json({ message: "Verify your email first" });
             return;
         }
@@ -98,4 +104,34 @@ const login = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export { register, login };
+const changePassword = async(req: Request, res: Response): Promise<void> => {
+    try{
+        const parsedBody = changePassSchema.safeParse(req.body);
+        if (!parsedBody.success) {
+            res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
+            return;
+        }
+        const { email , newPassword } = parsedBody.data;
+        const isVerified = await redisClient.get(`email_verified:${email}`)
+        if(isVerified !== "true"){
+            res.status(403).json({ message: "Verify your email first" });
+            return;
+        }
+        const user = await User.findOne({ email });
+        if(!user){
+            res.status(400).json({ message: "This user doesn't exist" });
+            return;
+        }
+        const hashedNewPassword = await hash(newPassword, 10);
+        user.password = hashedNewPassword;
+        await user.save();
+        await redisClient.del(`email_verified:${email}`);
+        res.status(200).json({ message: "Password updated successfully" });
+    } catch (err) {
+        console.error("❌ Some error occurred:", err);
+        res.status(500).json({ message: "Internal Server Error" });
+        return;
+    }
+}
+
+export { register, login , changePassword };
