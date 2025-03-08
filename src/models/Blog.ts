@@ -3,13 +3,14 @@ import { Types , Document } from "mongoose";
 
 interface IBlog extends Document{
     author: Types.ObjectId,
+    state: string,
     title: string,
     content: string,
-    published: boolean
 }
 
 const blogSchema = new Schema<IBlog>({
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    state: { type: String, enum: ["published", "draft"], default: "published" },
     title: { type: String, required: true },
     content: { type: String, required: true },
 }, { timestamps: true });

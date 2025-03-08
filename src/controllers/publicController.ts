@@ -4,7 +4,10 @@ import Blog from "../models/Blog.js"
 const getBlogById = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const blogId: string = req.params.id;
-		const blog = await Blog.findById(blogId);
+		const blog = await Blog.findOne({
+            _id: blogId,
+            state: "published"
+        });
 		res.status(200).json(blog);
 		return;
 	} catch (err) {
@@ -20,12 +23,13 @@ const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> =>
 
 		const query = search ?
 			{
-				$or: [
+				state: "published",
+                $or: [
                     { title: { $regex: search, $options: "i" } }, // Case-insensitive search in title
                     { content: { $regex: search, $options: "i" } }, // Case-insensitive search in content
                 ]
 			}
-			: {};
+			: { state: "published" };
 
 		const blogs = await Blog.find(query);
 		res.status(200).json(blogs);

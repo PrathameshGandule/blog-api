@@ -22,10 +22,10 @@ app.get('/', (req: Request, res: Response) => {
 
 import authRoutes from "./routes/authRoutes.js";
 import publicRoutes from "./routes/publicRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+import blogRoutes from "./routes/blogRoutes.js";
 
 app.use('/api/auth', authRoutes);
 app.use('/api/public', publicRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/blog', blogRoutes);
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

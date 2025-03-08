@@ -2,25 +2,26 @@ import { Request, Response } from "express";
 import { Types } from "mongoose";
 import { z } from "zod";
 import Blog from "../models/Blog.js";
-import { IBlog } from "../models/Blog.js";
 
 const blogSchema = z.object({
     title: z.string(),
-    content: z.string()
+    content: z.string(),
+    state: z.string()
 })
 
 const addBlog = async (req: Request, res: Response): Promise<void> => {
-	const userId: Types.ObjectId = req.user.id;
+	const userId:Types.ObjectId  = req.user.id;
     const parsedBody = blogSchema.safeParse(req.body);
     if (!parsedBody.success) {
         res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
         return;
     }
-    const { title , content } =  parsedBody.data;
+    const { title , content , state } =  parsedBody.data;
 
 	try {
 		const newBlog = new Blog({
 			author: userId,
+            state,
 			title,
 			content
 		});
@@ -71,7 +72,7 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
         res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
         return;
     }
-    const { title , content } =  parsedBody.data;
+    const { title , content , state } =  parsedBody.data;
 
 	try {
 		const blog = await Blog.findById(blogId);
@@ -87,6 +88,7 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
 
 		blog.title = title;
 		blog.content = content;
+        blog.state = state;
 
 		await blog.save();
 
@@ -101,9 +103,21 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
 const getBlogs = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const userId: Types.ObjectId = req.user.id;
-		const blogs = await Blog.find({ author: userId });
+		const blogs = await Blog.find({ author: userId , state: "published" });
 		res.status(200).json(blogs);
-	} catch (err: unknown) {
+	} catch (err) {
+		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
+		res.status(500).json({ message: "Internal Server Error" });
+		return;
+	}
+}
+
+const getDrafts = async (req: Request, res: Response): Promise<void> => {
+    try{
+        const userId: Types.ObjectId = req.user.id;
+		const blogs = await Blog.find({ author: userId , state: "draft" });
+		res.status(200).json(blogs);
+    } catch (err) {
 		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
 		res.status(500).json({ message: "Internal Server Error" });
 		return;
@@ -114,5 +128,6 @@ export {
 	addBlog,
 	deleteBlog,
 	updateBlog,
-	getBlogs
+	getBlogs,
+    getDrafts
 }

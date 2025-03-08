@@ -23,7 +23,7 @@ npm run start
 	- Login
     - Send OTP
     - Verify OTP
-- [User Routes](#user-routes)
+- [User Routes](#blog-routes)
 	- Add Blog
 	- Delete Blog
 	- Update Blog
@@ -95,8 +95,8 @@ npm run start
     }
     ```
 ***
-## User Routes
-1. `POST` - `/api/user/blog/add`
+## Blog Routes
+1. `POST` - `/api/blog`
 	- To add blog
 	- json PayLoad: -
 	```json
@@ -111,7 +111,7 @@ npm run start
 		"message": "Your blog is uploaded"
 	}
 	```
-2. `DELETE` - `/api/user/blog/delete/:id`
+2. `DELETE` - `/api/blog/:id`
 	- To delete a specific blog
 	- Id to be provided in params
 	- No json payload here
@@ -121,7 +121,7 @@ npm run start
 		"message": "Your blog is deleted"
 	}
 	```
-3. `PUT` - `/api/user/blog/update/:id`
+3. `PUT` - `/api/blog/:id`
 	- To update a specific blog
 	- Id to be provided in params
 	- Atleast one field to be given in json payload
@@ -139,7 +139,7 @@ npm run start
 		"blog": "<whole updated blog>"
 	}
 	```
-4. `GET` - `/api/user/blogs`
+4. `GET` - `/api/blog`
 	- To get all blogs posted by the user
 	- No json payload here
 	- Response: -
@@ -148,6 +148,15 @@ npm run start
 		"<list of all blogs>"
 	}
 	```
+5. `GET` - `/api/blog/drafts`
+    - To get all drafts of a user only
+    - No json PayLoad here
+    - Response :- 
+    ```json
+    {
+        "<list of all drafts>"
+    }
+    ```
 ***
 ## General public routes
 1. `GET` - `/api/public/blog/:id`
