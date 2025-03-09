@@ -4,8 +4,10 @@ import cookieParser from "cookie-parser";
 import ExpressMongoSanitize from "express-mongo-sanitize";
 import connectDB from "./config/db.js";
 import { connectRedis } from "./config/redis.js";
+import checkEnvs from "./utils/envChecker.js";
 dotenv.config();
 
+checkEnvs();
 connectDB();
 connectRedis();
 
@@ -15,6 +17,7 @@ const PORT = Number(process.env.PORT ?? 5000);
 app.use(express.json());
 app.use(cookieParser());
 app.use(ExpressMongoSanitize());
+app.disable("x-powered-by")
 
 app.get('/', (req: Request, res: Response) => {
 	res.status(200).json({ message: "Express + Typescript Server" });
