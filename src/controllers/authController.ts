@@ -3,9 +3,8 @@ import jwt from 'jsonwebtoken';
 import { z } from "zod";
 import { Request, Response } from "express";
 import { configDotenv } from "dotenv";
-import User from "../models/User.js"
 import { redisClient } from "../config/redis.js";
-import { sendOtp } from "../utils/otpUtil.js";
+import User from "../models/User.js"
 configDotenv();
 
 const { hash, compare } = bcryptjs;

@@ -6,7 +6,7 @@ import Blog from "../models/Blog.js";
 const blogSchema = z.object({
     title: z.string(),
     content: z.string(),
-    state: z.string()
+    state: z.enum(["published", "draft"]),
 })
 
 const addBlog = async (req: Request, res: Response): Promise<void> => {
@@ -54,7 +54,11 @@ const deleteBlog = async (req: Request, res: Response): Promise<void> => {
 			return;
 		}
 
-		await Blog.deleteOne({ _id: blog._id });
+		await Blog.findByIdAndUpdate(blogId,
+        {
+            $set: { state: "deleted" }
+        }
+        );
 
 		res.status(200).json({ message: "Your blog is deleted" });
 	} catch (err) {
@@ -103,7 +107,7 @@ const updateBlog = async (req: Request, res: Response): Promise<void> => {
 const getBlogs = async (req: Request, res: Response): Promise<void> => {
 	try {
 		const userId: Types.ObjectId = req.user.id;
-		const blogs = await Blog.find({ author: userId , state: "published" });
+		const blogs = await Blog.find({ author: userId , state: "published" }).populate("author", "name").exec();
 		res.status(200).json(blogs);
 	} catch (err) {
 		console.error("❌ Some error occurred:", err instanceof Error ? err.message : err);
