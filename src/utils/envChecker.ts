@@ -2,6 +2,10 @@ import { configDotenv } from "dotenv"
 configDotenv();
 
 const checkEnvs = (): void => {
+    if(!process.env.ANONYMOUS_USER_ID) { 
+        console.log("Please specify the ANONYMOUS_USER_ID secret")
+        process.exit(1);
+    };
     if(!process.env.MONGO_URI) { 
         console.log("Please specify the MONGO_URI secret")
         process.exit(1);

@@ -1,11 +1,18 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 const { verify } = jwt;
 import { Request, Response, NextFunction } from 'express';
+import { Types } from 'mongoose';
+
+interface userPL extends JwtPayload{
+    user: {
+        id: Types.ObjectId
+    }
+}
 
 declare global {
     namespace Express {
         interface Request {
-            user: JwtPayload;
+            user: userPL
         }
     }
 }
@@ -25,7 +32,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     }
 
     try {
-        const decodedUser = verify(token, jwt_secret) as JwtPayload;
+        const decodedUser = verify(token, jwt_secret) as userPL;
         req.user = decodedUser;
         next();
     } catch (err: unknown) {

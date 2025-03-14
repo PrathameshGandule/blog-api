@@ -10,7 +10,7 @@ interface IBlog extends Document{
 
 const blogSchema = new Schema<IBlog>({
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    state: { type: String, enum: ["published", "draft", "deleted"], default: "published" },
+    state: { type: String, enum: ["published", "draft"], required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
 }, { timestamps: true });
