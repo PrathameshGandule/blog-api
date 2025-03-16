@@ -7,11 +7,6 @@ const blogSchema = z.object({
     title: z.string(),
     content: z.string()
 });
-const stateSchema = z.enum(["draft", "published"])
-const objectIdSchema = z.custom<Types.ObjectId>(
-    (id) => Types.ObjectId.isValid(id),
-    { message: "Invalid ObjectId" }
-);
 
 const saveBlog = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -43,10 +38,9 @@ const saveBlog = async (req: Request, res: Response): Promise<void> => {
             content,
         });
         await draft.save();
-        res.status(200).json({
-            success: true,
-            message: "Your draft is saved"
-        });
+        if(state === "draft") res.status(200).json({ success: true, message: "Your draft is saved" });
+        else if (state === "published" && anon === "false") res.status(200).json({ success: true, message: "Your post is published" });
+        else res.status(200).json({ success: true, message: "Your post is published anonymously" });  
     } catch (err) {
         console.error("❌ Some error occurred:", err);
         res.status(500).json({ success: false, message: "Internal Server Error" });

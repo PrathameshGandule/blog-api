@@ -69,7 +69,7 @@ const login = async (req: Request, res: Response): Promise<void> => {
         const user = await User.findOne({ email });
         if (!user) {
             res.status(404).json({
-                message: `User with username ${email} not found !`
+                message: `User with email ${email} not found !`
             });
             return;
         }
@@ -85,13 +85,13 @@ const login = async (req: Request, res: Response): Promise<void> => {
         const token: string = sign(
             { id: user._id },
             jwt_secret,
-            { expiresIn: "5d" }
+            { expiresIn: "24h" }
         )
         res.cookie("token", token, {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            maxAge: 5 * 24 * 60 * 60 * 1000
+            maxAge: 24 * 60 * 60 * 1000
         });
         res.status(200).json({
             message: "Login successful",
