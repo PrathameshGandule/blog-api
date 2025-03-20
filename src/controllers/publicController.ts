@@ -9,11 +9,11 @@ const getBlogById = async (req: Request, res: Response): Promise<void> => {
             _id: blogId,
             state: "published"
         }).select("-__v -updatedAt").populate("author", "name").exec();
-		res.status(200).json({ success: true, blog });
+		res.status(200).json(blog);
 		return;
 	} catch (err) {
 		console.error("❌ Some error occurred:", err);
-		res.status(500).json({ success: false, message: "Internal Server Error" });
+		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
 }
@@ -33,10 +33,10 @@ const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> =>
 			: { state: "published" };
 
 		const blogs = await Blog.find(query).select("-__v -updatedAt").populate("author", "name").exec();
-		res.status(200).json({ success: true, length: blogs.length, blogs });
+		res.status(200).json({ length: blogs.length, blogs });
 	} catch (err) {
 		console.error("❌ Some error occurred:", err);
-		res.status(500).json({ success: false, message: "Internal Server Error" });
+		res.status(500).json({ message: "Internal Server Error" });
 		return;
 	}
 }
