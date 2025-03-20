@@ -14,6 +14,7 @@ import validateBlogParams from "../middlewares/blogMiddleware.js";
 
 const router = Router();
 
+// blog routes
 router.post('/:state', verifyToken, validateBlogParams("state", "anon"), saveBlog); //?anon=true query for anonymous publishing
 router.delete('/:state/:id', verifyToken, validateBlogParams("state", "id"), deleteBlog);
 router.put('/:state/:id', verifyToken, validateBlogParams("state", "id"), updateBlog);

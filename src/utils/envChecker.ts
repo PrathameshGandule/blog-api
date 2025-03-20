@@ -1,6 +1,7 @@
 import { configDotenv } from "dotenv"
 configDotenv();
 
+// this function checks if all necessary environment varialbles exists in .env
 const checkEnvs = (): void => {
     if(!process.env.ANONYMOUS_USER_ID) { 
         console.log("Please specify the ANONYMOUS_USER_ID secret")

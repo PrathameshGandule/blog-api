@@ -4,7 +4,10 @@ import { Types } from "mongoose";
 
 const getBlogById = async (req: Request, res: Response): Promise<void> => {
 	try {
+        // take parameters from req
 		const blogId = new Types.ObjectId(req.params.id);
+
+        // find the blog and populate by author id
 		const blog = await Blog.findOne({
             _id: blogId,
             state: "published"
@@ -22,6 +25,7 @@ const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> =>
 	try {
 		const search = req.body.search ? String(req.body.search) : false;
 
+        // build the query according to search
 		const query = search ?
 			{
 				state: "published",
@@ -32,6 +36,7 @@ const getBlogsWithSearch = async (req: Request, res: Response): Promise<void> =>
 			}
 			: { state: "published" };
 
+        // populate by author Id
 		const blogs = await Blog.find(query).select("-__v -updatedAt").populate("author", "name").exec();
 		res.status(200).json({ length: blogs.length, blogs });
 	} catch (err) {

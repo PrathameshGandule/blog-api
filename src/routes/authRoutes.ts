@@ -4,6 +4,7 @@ import { sendOtpToUser , verifyOtpFromUser } from "../controllers/otpController.
 
 const router = Router();
 
+// auth routes
 router.post('/register', register);
 router.post('/login', login);
 router.post('/forgot-password', changePassword);

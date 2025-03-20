@@ -4,6 +4,8 @@ import { Types } from "mongoose";
 // Middleware function with type assertion
 const validateBlogParams = (...validate: string[]) => {
     return (req: Request, res: Response, next: NextFunction): void => {
+
+        // make sure state is either 'draft' or 'published' only
         if (validate.includes("state")) {
             const isStateValid = req.params.state === "draft" || req.params.state === "published"
             if (!isStateValid) {
@@ -11,6 +13,8 @@ const validateBlogParams = (...validate: string[]) => {
                 return
             }
         }
+
+        // make sure the id is a valid mongodb ObjectId
         if (validate.includes("id")) {
             const isIdValid = Types.ObjectId.isValid(req.params.id);
             if (!isIdValid) {
@@ -18,6 +22,8 @@ const validateBlogParams = (...validate: string[]) => {
                 return;
             }
         }
+
+        // make sure anon query parameter is either 'true' or 'false'
         if(validate.includes("anon")){
             const isAnonQueryValid = req.query.anon === "true" || req.query.anon === "false";
             if(!isAnonQueryValid){

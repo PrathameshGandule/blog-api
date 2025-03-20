@@ -1,9 +1,6 @@
 import { createTransport } from "nodemailer";
-import { redisClient } from "../config/redis.js";
-import bcryptjs from "bcryptjs";
-import { text } from "express";
-const { hash , compare } = bcryptjs;
 
+// transporter to send mail 
 const transporter = createTransport({
     service: "Gmail",
     host: "smtp.gmail.com",
@@ -15,11 +12,14 @@ const transporter = createTransport({
     },
 });
 
+// generate a random 6 digit otp
 const generateOtp = () => {
     return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
+// otp sender function
 const sendOtp = async (mailToSend: string, otp: string): Promise<boolean> => {
+    // mail sender configuration
     const mailOptions = {
         from: process.env.USER_EMAIL,
         to: mailToSend,
@@ -27,9 +27,9 @@ const sendOtp = async (mailToSend: string, otp: string): Promise<boolean> => {
         text: `Your email verification otp for Blog API is ${otp}\nIt's valid for only 2 minutes`
     };
 
+    // sending mail and returning true or false according to success of process
     try {
-        const info = await transporter.sendMail(mailOptions);
-        // console.log("✅ Email sent: ", info);
+        await transporter.sendMail(mailOptions);
         return true;
     } catch (error) {
         console.error("❌ Error sending email: ", error);
@@ -37,4 +37,4 @@ const sendOtp = async (mailToSend: string, otp: string): Promise<boolean> => {
     }
 }
 
-export {generateOtp , sendOtp };
+export { generateOtp, sendOtp };
