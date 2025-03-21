@@ -1,4 +1,5 @@
 # blog-api-lite
+# THE API IS GOING UNDER BIG CHANGES SO THINGS WON'T WORK FOR NOW
 
 # Starting the server
 ```bash
