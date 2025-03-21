@@ -1,18 +1,26 @@
 import { Schema, model } from "mongoose";
-import { Types , Document } from "mongoose";
+import { Types, Document } from "mongoose";
 
-interface IBlog extends Document{
+interface IBlog extends Document {
     author: Types.ObjectId,
-    state: string,
+    state: "published" | "draft",
+    uniqueId: number,
+    slug: string,
     title: string,
     content: string,
+    tags: string[],
+    category: Types.ObjectId
 }
 
 const blogSchema = new Schema<IBlog>({
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
     state: { type: String, enum: ["published", "draft"], required: true },
+    uniqueId: { type: Number, required: true, unique: true },
+    slug: { type: String, required: true, trim: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
+    tags: [{ type: String, trim: true }],
+    category: { type: Schema.Types.ObjectId, ref: "Category", required: true }
 }, { timestamps: true });
 
 const Blog = model<IBlog>("Blog", blogSchema);
