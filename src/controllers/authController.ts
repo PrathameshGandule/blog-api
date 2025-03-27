@@ -13,6 +13,7 @@ const { sign } = jwt;
 const registrationSchema = z.object({
     name: z.string().nonempty(),
     email: z.string().email(),
+    bio: z.string(),
     password: z.string()
 });
 
@@ -24,7 +25,7 @@ const loginSchema = z.object({
 const changePassSchema = z.object({
     email: z.string().email(),
     newPassword: z.string()
-})
+});
 
 const register = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -34,7 +35,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
             return;
         }
-        const { name, email, password } = parsedBody.data;
+        const { name, email, bio, password } = parsedBody.data;
 
         // check if user already exists
         const user = await User.findOne({ email });
@@ -52,7 +53,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
 
         // hashing the password and saving new user
         const hashedPassword = await hash(password, 10);
-        const newUser = new User({ name, email, password: hashedPassword });
+        const newUser = new User({ name, email, bio, password: hashedPassword });
         await newUser.save();
 
         // delete the email verified field from redis
@@ -148,8 +149,8 @@ const changePassword = async (req: Request, res: Response): Promise<void> => {
         }
 
         // hash new password and save it
-        const hashedNewPassword = await hash(newPassword, 10);
-        user.password = hashedNewPassword;
+        const newHashedPassword = await hash(newPassword, 10);
+        user.password = newHashedPassword;
         await user.save();
 
         // delete the email verified field from redis
