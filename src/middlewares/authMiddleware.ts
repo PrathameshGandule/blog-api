@@ -3,16 +3,26 @@ const { verify } = jwt;
 import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 
-interface userPL extends JwtPayload{
-    user: {
-        id: Types.ObjectId
-    }
+interface userPL extends JwtPayload {
+    id: Types.ObjectId;
 }
 
 declare global {
     namespace Express {
         interface Request {
-            user: userPL
+            user: userPL,
+            validatedData: {
+                state: "draft" | "published",
+                anon: "true" | "false",
+                blogId: Types.ObjectId,
+				anonBlogdeleteId: string
+            },
+            validatedBody: {
+                title: string;
+                content: string;
+                tags?: string[];
+                category: Types.ObjectId;
+            }
         }
     }
 }
@@ -30,8 +40,8 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
     // check for jwt secret
     if (!jwt_secret) {
         console.error("❌ No JWT secret provided.");
-		res.status(500).json({ message: "Internal Server Error" });
-        return; 
+        res.status(500).json({ message: "Internal Server Error" });
+        return;
     }
 
     // decode user and set it paste it to req body to use further
@@ -41,8 +51,8 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
         next();
     } catch (err) {
         console.error("❌ Token verification error:", err instanceof Error ? err.message : err);
-		res.status(403).json({ message: "Invalid or expired token" }); 
-        return; 
+        res.status(403).json({ message: "Invalid or expired token" });
+        return;
     }
 };
 
