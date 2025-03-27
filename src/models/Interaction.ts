@@ -9,9 +9,9 @@ interface IInteraction extends Document {
 
 const interactionSchema = new Schema<IInteraction>({
     blogId: { type: Schema.Types.ObjectId, ref: "Blog", required: true, unique: true },
-    likes: [{ type: Schema.Types.ObjectId, ref: "User", unique: true }],
-    saves: [{ type: Schema.Types.ObjectId, ref: "User", unique: true }],
-    shares: [{ type: Schema.Types.ObjectId, ref: "User", unique: true }]
+    likes: [{ type: Schema.Types.ObjectId, ref: "User", unique: true, _id: false }],
+    saves: [{ type: Schema.Types.ObjectId, ref: "User", unique: true, _id: false }],
+    shares: [{ type: Schema.Types.ObjectId, ref: "User", unique: true, _id: false }]
 }, { timestamps: true });
 
 const Interaction = model<IInteraction>("Interaction", interactionSchema);
