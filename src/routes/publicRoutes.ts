@@ -5,7 +5,7 @@ import {
 	getBlogsWithSearch 
 } from "../controllers/publicController.js";
 
-import validateBlogParams from "../middlewares/blogMiddleware.js";
+import { validateBlogParams } from "../middlewares/blogMiddleware.js";
 
 const router = Router();
 
