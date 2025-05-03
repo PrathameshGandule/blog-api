@@ -1,10 +1,17 @@
-import slugify from "slugify";
-import Counter from "../models/Counter.js";
-import { Types } from "mongoose";
 import bcryptjs from "bcryptjs";
 import crypto from "crypto";
+import { Types } from "mongoose";
+import slugify from "slugify";
 import Blog, { IBlog } from "../models/Blog.js";
-import { blogtypes } from "../@types/types.js";
+import Counter from "../models/Counter.js";
+// import { blogtypes } from "../types/types.js";
+
+
+enum blogtypes {
+	NORMAL_DRAFT = 1,
+	ANON_POST,
+	NORMAL_POST
+}
 
 export class BodyRestrictedError extends Error {
 	constructor(message: string) {
@@ -84,11 +91,11 @@ export const getDeleteIds = async (): Promise<[string, string]> => {
 	return [anonBlogDeleteId, hashedAnonBlogDeleteId];
 }
 
-export const buildResponse = (blogType: blogtypes , anonBlogDeleteId: string | null) => {
+export const buildResponse = (blogType: blogtypes, anonBlogDeleteId: string | null) => {
 	let message = blogType === blogtypes.NORMAL_DRAFT ? "Your draft is saved"
 		: blogType === blogtypes.NORMAL_POST ? "Your post is published"
-		: "Your post is published anonymously and use following special id if you want to delete this post";
-	let response = blogType === blogtypes.ANON_POST ? { deleteId: anonBlogDeleteId, message } : { message };
+			: "Your post is published anonymously and use following special id if you want to delete this post";
+	let response = blogType === blogtypes.ANON_POST ? { message, deleteId: anonBlogDeleteId } : { message };
 	return response;
 }
 

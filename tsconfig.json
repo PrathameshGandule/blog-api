@@ -2,15 +2,25 @@
     "compilerOptions": {
         "target": "ES6",
         "module": "es2022",
-		"moduleResolution": "node",
+        "moduleResolution": "node",
         "rootDir": "./src",
         "outDir": "./dist",
         "strict": true,
         "esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "skipLibCheck": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "src/types"
+        ], // Include src/types for type augmentation
+        "types": [
+            "node"
+        ] // If you want to include Node.js types explicitly
     },
-    "include": ["src/**/*.ts"],
-	"exclude": ["node_modules"]
+    "include": [
+        "src/**/*.ts",
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }
-  

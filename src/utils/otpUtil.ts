@@ -18,7 +18,7 @@ const generateOtp = () => {
 }
 
 // otp sender function
-const sendOtp = async (mailToSend: string, otp: string): Promise<boolean> => {
+const sendOtp = async (mailToSend: string, otp: string): Promise<void> => {
     // mail sender configuration
     const mailOptions = {
         from: process.env.USER_EMAIL,
@@ -27,14 +27,27 @@ const sendOtp = async (mailToSend: string, otp: string): Promise<boolean> => {
         text: `Your email verification otp for Blog API is ${otp}\nIt's valid for only 2 minutes`
     };
 
-    // sending mail and returning true or false according to success of process
     try {
         await transporter.sendMail(mailOptions);
-        return true;
     } catch (error) {
         console.error("❌ Error sending email: ", error);
-        return false;
     }
 }
 
-export { generateOtp, sendOtp };
+const sendAnonDeleteMail = async (mailToSend: string, anonBlogDeleteId: string): Promise<void> => {
+	// mail sender configuration
+	const mailOptions = {
+		from: process.env.USER_EMAIL,
+		to: mailToSend,
+		subject: "Your anon blog's delete token",
+		text: `Your anonymous blog's delete token is as follows\n${anonBlogDeleteId}\nUse this if you ever wish to delete your anonymous blog`
+	};
+
+	try {
+		await transporter.sendMail(mailOptions);
+	} catch (error) {
+		console.error("❌ Error sending email: ", error);
+	}
+}
+
+export { generateOtp, sendOtp, sendAnonDeleteMail };

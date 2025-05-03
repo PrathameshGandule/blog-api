@@ -4,27 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Types } from 'mongoose';
 
 interface userPL extends JwtPayload {
-    id: Types.ObjectId;
-}
-
-declare global {
-    namespace Express {
-        interface Request {
-            user: userPL,
-            validatedData: {
-                state: "draft" | "published",
-                anon: "true" | "false",
-                blogId: Types.ObjectId,
-				anonBlogdeleteId: string
-            },
-            validatedBody: {
-                title: string;
-                content: string;
-                tags?: string[];
-                category: Types.ObjectId;
-            }
-        }
-    }
+	id: Types.ObjectId;
 }
 
 const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
@@ -46,8 +26,10 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): void => {
 
     // decode user and set it paste it to req body to use further
     try {
+		// res.locals.user = {}
+		res.locals.user ||= {} as typeof res.locals.user;
         const decodedUser = verify(token, jwt_secret) as userPL;
-        req.user = decodedUser;
+        res.locals.user = decodedUser;
         next();
     } catch (err) {
         console.error("❌ Token verification error:", err instanceof Error ? err.message : err);

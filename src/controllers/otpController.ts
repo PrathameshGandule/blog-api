@@ -19,7 +19,7 @@ const sendOtpToUser = async (req: Request, res: Response): Promise<void> => {
         // Parse the correct body requiremt of mail
         const parsedBody = sendSchema.safeParse(req.body);
         if (!parsedBody.success) {
-            res.status(400).json({ success: false, message: "Invalid input data", errors: parsedBody.error.errors });
+            res.status(400).json({ message: "Invalid input data", errors: parsedBody.error.errors });
             return;
         }
         const { email } = parsedBody.data;
@@ -27,14 +27,14 @@ const sendOtpToUser = async (req: Request, res: Response): Promise<void> => {
         // checking if email is already verified
         const isEmailVerified = await redisClient.get(`email_verified${email}`);
         if(isEmailVerified === "true"){
-            res.status(400).json({ success: false, message: "Your email is already verified" });
+            res.status(400).json({ message: "Your email is already verified" });
             return;
         }
 
         // checking for cooldown period 
         const isCoolDown = await redisClient.get(`otp_cooldown:${email}`);
         if(isCoolDown === "true"){
-            res.status(400).json({success: false,  message: "Please try after 1 minute" });
+            res.status(400).json({ message: "Please try after 1 minute" });
             return;
         }
 
@@ -43,19 +43,15 @@ const sendOtpToUser = async (req: Request, res: Response): Promise<void> => {
         const hashedOtp = await hash(otp, 8);
         await redisClient.setEx(`otp:${email}`, 120, hashedOtp);
 
-        // checking if mail sending is successfull
-        const isMailSent = await sendOtp(email, otp);
-        if(!isMailSent){
-            res.status(500).json({ success: false, message: "Unable to send mail" });
-            return;
-        }
+        // sending mail
+        await sendOtp(email, otp);
 
         // setting cooldown period
         await redisClient.setEx(`otp_cooldown:${email}`, 60, "true");
-        res.status(200).json({ success: true, message: "Otp sent successfully" });
+        res.status(200).json({ message: "Otp sent successfully" });
     } catch (err) {
         console.error("❌ Some error occurred:", err);
-        res.status(500).json({ success: false, message: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error" });
         return;
     }
 }

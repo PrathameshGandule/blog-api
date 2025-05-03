@@ -24,17 +24,23 @@ app.disable("x-powered-by")
 
 // standard base route response
 app.get('/', (req: Request, res: Response) => {
-	res.status(200).json({ message: "Express + Typescript Server" });
+	res.status(200).json({ message: "Express + Typescript Server", name: "Blog API" });
 });
 
 import authRoutes from "./routes/authRoutes.js";
 import publicRoutes from "./routes/publicRoutes.js";
 import blogRoutes from "./routes/blogRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import commentRoutes from "./routes/commentRoutes.js";
+import interactionRoutes from "./routes/interactionRoutes.js";
 
 // use all routes 
 app.use('/api/auth', authRoutes);
 app.use('/api/public', publicRoutes);
 app.use('/api/blog', blogRoutes);
+app.use('/api/category', categoryRoutes);
+app.use('/api/comment', commentRoutes);
+app.use('/api/interaction', interactionRoutes);
 
 // listening server on port
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
