@@ -14,8 +14,8 @@ const userSchema = new Schema<IUser>({
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true, trim: true },
     bio: { type: String, trim: true,  },
-    savedPosts: [{ type: Schema.Types.ObjectId, ref: "Blog", unique: true, _id: false }],
-    following: [{ type: Schema.Types.ObjectId, ref: "User", unique: true, _id: false }]
+    savedPosts: [{ type: Schema.Types.ObjectId, ref: "Blog", _id: false }],
+    following: [{ type: Schema.Types.ObjectId, ref: "User", _id: false }]	
 }, { timestamps: true });
 
 const User = model<IUser>("User", userSchema);
