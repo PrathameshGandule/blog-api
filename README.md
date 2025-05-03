@@ -1,20 +1,19 @@
-# blog-api-lite
-# THE API IS GOING UNDER BIG CHANGES SO THINGS WON'T WORK FOR NOW
+# blog-api
 
 # Starting the server
 ```bash
-git clone https://github.com/PrathameshGandule/blog-api-lite.git
+git clone https://github.com/PrathameshGandule/blog-api.git
 ```
 ```bash
 cd blog-api-lite
-npm install
+pnpm install
 ```
 - Setup .env configs
 ```bash
-npm run build
+pnpm run build
 ```
 ```bash
-npm run start
+pnpm run start
 ```
 ***
 
