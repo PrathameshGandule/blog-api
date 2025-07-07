@@ -33,6 +33,7 @@ import blogRoutes from "./routes/blogRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import interactionRoutes from "./routes/interactionRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // use all routes 
 app.use('/api/auth', authRoutes);
@@ -41,6 +42,7 @@ app.use('/api/blog', blogRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/comment', commentRoutes);
 app.use('/api/interaction', interactionRoutes);
+app.use('/api/user', userRoutes);
 
 // listening server on port
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

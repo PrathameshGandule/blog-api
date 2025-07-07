@@ -21,7 +21,7 @@ router.post('/:state', verifyToken, validateBlogParams("state", "anon"), valiDat
 router.delete('/:state/:blogId', verifyToken, validateBlogParams("state", "blogId"), deleteBlog);
 router.put('/:state/:blogId', verifyToken, validateBlogParams("state", "blogId"), updateBlog);
 router.put('/publish/:blogId', verifyToken, validateBlogParams("blogId", "anon"), publishDraft); //?anon=true query for anonymous publishing
-router.get('/:state', verifyToken, validateBlogParams("state"), getBlogsWithSearch);
+router.get('/:state', verifyToken, validateBlogParams("state"), getBlogsWithSearch); // this is a comment
 router.get('/:state/:blogId', verifyToken, validateBlogParams("state", "blogId"), getBlogById);
 
 export default router;
