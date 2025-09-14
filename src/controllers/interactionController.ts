@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import Interaction from "../models/Interaction";
-import Blog from "../models/Blog";
+import Interaction from "../models/Interaction.js";
+import Blog from "../models/Blog.js";
 
 const toggleInteraction = async (req: Request, res: Response): Promise<void> => {
 	try {

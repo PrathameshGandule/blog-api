@@ -1,0 +1,591 @@
+{
+	"info": {
+		"_postman_id": "a36e3e0a-a241-4247-a878-738ce94d2c35",
+		"name": "blog-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37326479",
+		"_collection_link": "https://test-team-5451.postman.co/workspace/common-workspace~10aa6773-fd9d-4916-a172-1a935a708d99/collection/37326479-a36e3e0a-a241-4247-a878-738ce94d2c35?action=share&source=collection_link&creator=37326479"
+	},
+	"item": [
+		{
+			"name": "Base route",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				},
+				"description": "Base route call"
+			},
+			"response": []
+		},
+		{
+			"name": "send otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"prathameshgandule1@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/send-otp",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"send-otp"
+					]
+				},
+				"description": "Send otp for verification"
+			},
+			"response": []
+		},
+		{
+			"name": "verify otp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"prathameshgandule1@gmail.com\",\r\n    \"otp\": \"216770\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/verify-otp",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"verify-otp"
+					]
+				},
+				"description": "Verify otp"
+			},
+			"response": []
+		},
+		{
+			"name": "register user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Prathamesh Gandule\",\r\n    \"email\": \"prathameshgandule1@gmail.com\",\r\n    \"bio\": \"A 3rd year student\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				},
+				"description": "User registration  \nOnly five minutes"
+			},
+			"response": []
+		},
+		{
+			"name": "login user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"prathameshgandule1@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "add category",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"tech\",\r\n    \"description\": \"tech category for tech bros\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/category/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"category",
+						""
+					]
+				},
+				"description": "Category addition  \ncurrently not authorized for testing"
+			},
+			"response": []
+		},
+		{
+			"name": "get all categories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/category/",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"category",
+						""
+					]
+				},
+				"description": "Get all categories"
+			},
+			"response": []
+		},
+		{
+			"name": "add blog",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"user 2 A published non anon blog\",\r\n    \"content\": \"user 2 A publsihed blog directly created\",\r\n    \"category\": \"6815f15a48365b73ad4e0cd4\",\r\n    \"tags\": [\r\n        \"tech\", \"publsihed\", \"blog\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/blog/published?anon=false",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"published"
+					],
+					"query": [
+						{
+							"key": "anon",
+							"value": "false"
+						}
+					]
+				},
+				"description": "Add blog as draft, post, anon post"
+			},
+			"response": []
+		},
+		{
+			"name": "add draft",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"user 2 A draft no publishing \",\r\n    \"content\": \"user 2 A draft which is not to be published\",\r\n    \"category\": \"6815f15a48365b73ad4e0cd4\",\r\n    \"tags\": [\r\n        \"tech\", \"publsihed\", \"blog\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/blog/draft?anon=false",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"draft"
+					],
+					"query": [
+						{
+							"key": "anon",
+							"value": "false"
+						}
+					]
+				},
+				"description": "add draft"
+			},
+			"response": []
+		},
+		{
+			"name": "add anon blog",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"user 2 A directly published anon blog 2\",\r\n    \"content\": \"user 2 A anon publsihed blog directly created 2\",\r\n    \"category\": \"6815f15a48365b73ad4e0cd4\",\r\n    \"tags\": [\r\n        \"tech\", \"publsihed\", \"blog\", \"anon\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/blog/published?anon=true",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"published"
+					],
+					"query": [
+						{
+							"key": "anon",
+							"value": "true"
+						}
+					]
+				},
+				"description": "anon blog"
+			},
+			"response": []
+		},
+		{
+			"name": "get all personal blogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/blog/published",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"published"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get public blogs id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/public/6815f1fc48b2e07fc50a83d2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"public",
+						"6815f1fc48b2e07fc50a83d2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get public blogs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/public",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"public"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete anon blog",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/blog/anonymous/6816038caed563ebe2e7cf20?deleteId=21f52c27-0221-4051-a511-6cdad78a70b0",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"blog",
+						"anonymous",
+						"6816038caed563ebe2e7cf20"
+					],
+					"query": [
+						{
+							"key": "deleteId",
+							"value": "21f52c27-0221-4051-a511-6cdad78a70b0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"user 2 My fourth comment on public post\",\r\n    \"parentId\": \"68160345aed563ebe2e7cf1a\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/comment/68160345aed563ebe2e7cf1a",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"comment",
+						"68160345aed563ebe2e7cf1a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add reply comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"My 2nd reply to first comment\",\r\n    \"parentId\": \"68160611aed563ebe2e7cf30\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/comment/68160345aed563ebe2e7cf1a",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"comment",
+						"68160345aed563ebe2e7cf1a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get parent comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/comment/parent/68160345aed563ebe2e7cf1a",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"comment",
+						"parent",
+						"68160345aed563ebe2e7cf1a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get reply comments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/comment/reply/68160345aed563ebe2e7cf1a",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"comment",
+						"reply",
+						"68160345aed563ebe2e7cf1a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like a post",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"like\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/interaction/toggle/6815f1fc48b2e07fc50a83d2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"interaction",
+						"toggle",
+						"6815f1fc48b2e07fc50a83d2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "toggle like on comment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/comment/toggle/6815f2e03f43315594fd5bfa",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"comment",
+						"toggle",
+						"6815f2e03f43315594fd5bfa"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get my interactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/interaction/my",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"interaction",
+						"my"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "follow a user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/api/user/follow/6815f15048365b73ad4e0cd1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"user",
+						"follow",
+						"6815f15048365b73ad4e0cd1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3000",
+			"type": "string"
+		}
+	]
+}
